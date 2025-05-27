@@ -1,9 +1,12 @@
 
 import { useState } from 'react';
 import { MapPin, Bed, Bath, Square, Heart, ArrowRight } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 const FeaturedProperties = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [likedProperties, setLikedProperties] = useState<Set<number>>(new Set());
+  const { toast } = useToast();
 
   const properties = [
     {
@@ -41,8 +44,90 @@ const FeaturedProperties = () => {
       sqft: 1200,
       type: "Cottage",
       featured: true
+    },
+    {
+      id: 4,
+      title: "Urban Luxury Penthouse",
+      location: "Miami, Florida",
+      price: "$890,000",
+      image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=600&h=400&fit=crop",
+      beds: 3,
+      baths: 3,
+      sqft: 2200,
+      type: "Penthouse",
+      featured: false
+    },
+    {
+      id: 5,
+      title: "Mountain View Estate",
+      location: "Boulder, Colorado",
+      price: "$720,000",
+      image: "https://images.unsplash.com/photo-1551038247-3d9af20df552?w=600&h=400&fit=crop",
+      beds: 5,
+      baths: 4,
+      sqft: 3500,
+      type: "Estate",
+      featured: false
+    },
+    {
+      id: 6,
+      title: "Modern Lakefront Home",
+      location: "Lake Tahoe, California",
+      price: "$1,200,000",
+      image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop",
+      beds: 4,
+      baths: 3,
+      sqft: 2800,
+      type: "Lakefront",
+      featured: true
     }
   ];
+
+  const handleFavoriteToggle = (propertyId: number, propertyTitle: string) => {
+    const newLikedProperties = new Set(likedProperties);
+    if (likedProperties.has(propertyId)) {
+      newLikedProperties.delete(propertyId);
+      toast({
+        title: "Removed from favorites",
+        description: `${propertyTitle} has been removed from your favorites.`,
+      });
+    } else {
+      newLikedProperties.add(propertyId);
+      toast({
+        title: "Added to favorites",
+        description: `${propertyTitle} has been added to your favorites.`,
+      });
+    }
+    setLikedProperties(newLikedProperties);
+  };
+
+  const handleQuickView = (property: typeof properties[0]) => {
+    toast({
+      title: "Quick View",
+      description: `Opening quick view for ${property.title}`,
+    });
+  };
+
+  const handleViewDetails = (property: typeof properties[0]) => {
+    toast({
+      title: "View Details",
+      description: `Viewing detailed information for ${property.title}`,
+    });
+  };
+
+  const handleViewAllProperties = () => {
+    toast({
+      title: "All Properties",
+      description: "Redirecting to all properties page...",
+    });
+  };
+
+  const handleExploreAllProperties = () => {
+    toast({
+      title: "Explore Properties",
+      description: "Loading comprehensive property listings...",
+    });
+  };
 
   return (
     <section id="properties" className="py-20 relative overflow-hidden">
@@ -58,7 +143,10 @@ const FeaturedProperties = () => {
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Explore our handpicked selection of exceptional properties that offer the perfect blend of luxury, comfort, and location.
           </p>
-          <button className="btn-secondary">
+          <button 
+            className="btn-secondary"
+            onClick={handleViewAllProperties}
+          >
             View All Properties
           </button>
         </div>
@@ -92,12 +180,24 @@ const FeaturedProperties = () => {
                 )}
                 
                 {/* Favorite Button */}
-                <button className="absolute top-4 right-4 w-10 h-10 glass-card rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110">
-                  <Heart className="w-5 h-5 text-white" />
+                <button 
+                  className={`absolute top-4 right-4 w-10 h-10 glass-card rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 ${
+                    likedProperties.has(property.id) ? 'bg-red-500/20' : ''
+                  }`}
+                  onClick={() => handleFavoriteToggle(property.id, property.title)}
+                >
+                  <Heart 
+                    className={`w-5 h-5 transition-colors ${
+                      likedProperties.has(property.id) ? 'text-red-500 fill-red-500' : 'text-white'
+                    }`} 
+                  />
                 </button>
                 
                 {/* Quick View Button */}
-                <button className="absolute bottom-4 right-4 btn-primary px-4 py-2 text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                <button 
+                  className="absolute bottom-4 right-4 btn-primary px-4 py-2 text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
+                  onClick={() => handleQuickView(property)}
+                >
                   Quick View
                 </button>
               </div>
@@ -142,11 +242,14 @@ const FeaturedProperties = () => {
                 </div>
 
                 {/* Action Button */}
-                <button className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 group/btn ${
-                  hoveredCard === property.id
-                    ? 'btn-primary'
-                    : 'glass-card text-white hover:bg-white/20'
-                }`}>
+                <button 
+                  className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 group/btn ${
+                    hoveredCard === property.id
+                      ? 'btn-primary'
+                      : 'glass-card text-white hover:bg-white/20'
+                  }`}
+                  onClick={() => handleViewDetails(property)}
+                >
                   <span>View Details</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                 </button>
@@ -160,7 +263,10 @@ const FeaturedProperties = () => {
 
         {/* Bottom CTA */}
         <div className="text-center mt-16">
-          <button className="btn-primary px-8 py-4 text-lg flex items-center space-x-2 mx-auto group">
+          <button 
+            className="btn-primary px-8 py-4 text-lg flex items-center space-x-2 mx-auto group"
+            onClick={handleExploreAllProperties}
+          >
             <span>Explore All Properties</span>
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
