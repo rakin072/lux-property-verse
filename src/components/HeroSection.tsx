@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { Search, MapPin, Home, ArrowRight, Heart, Star } from 'lucide-react';
+import { Search, MapPin, Home, ArrowRight, Heart, Star, Smile } from 'lucide-react';
 
 const HeroSection = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,9 +60,22 @@ const HeroSection = () => {
               </div>
               
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
-                <span className="block mb-2 text-white/90 hover:text-white transition-all duration-700 text-shadow-xl">
-                  Find Your
-                </span>
+                <div className="flex items-center space-x-4 mb-2">
+                  <span className="text-white/90 hover:text-white transition-all duration-700 text-shadow-xl">
+                    Find Your
+                  </span>
+                  {/* 3D Happy Smiley Emoji */}
+                  <div className="relative perspective-1000">
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 glass-card-dark rounded-full flex items-center justify-center animate-float glow-border transform-gpu transition-all duration-1000 hover:rotate-y-2 hover:scale-110 group cursor-pointer">
+                      <Smile className="w-8 h-8 lg:w-10 lg:h-10 text-yellow-400 animate-pulse group-hover:text-yellow-300 transition-all duration-500" />
+                      {/* 3D Glow Effect */}
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400/20 to-orange-400/20 blur-xl animate-ambient-glow"></div>
+                      {/* Floating sparkles around smiley */}
+                      <div className="absolute -top-2 -right-2 w-3 h-3 bg-yellow-300/60 rounded-full animate-float blur-sm" style={{ animationDelay: '0.5s' }}></div>
+                      <div className="absolute -bottom-2 -left-2 w-2 h-2 bg-orange-300/60 rounded-full animate-float blur-sm" style={{ animationDelay: '1.5s' }}></div>
+                    </div>
+                  </div>
+                </div>
                 <span className="text-gradient animate-glow bg-gradient-to-r from-electric-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent hover:from-electric-300 hover:via-purple-300 hover:to-cyan-300 transition-all duration-700 text-shadow-glow">
                   Perfect
                 </span>
