@@ -83,7 +83,7 @@
   }
   
   .property-card {
-    @apply glass-card-dark p-6 transition-all duration-500 transform hover:scale-105 hover:rotate-y-2 group cursor-pointer;
+    @apply glass-card-dark p-6 transition-all duration-500 transform hover:scale-105 hover:rotate-y-2 cursor-pointer;
     transform-style: preserve-3d;
   }
   
