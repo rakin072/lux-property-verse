@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Bed, Bath, Square, Heart, ArrowRight } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Heart, ArrowRight, Star } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -32,7 +32,17 @@ const FeaturedProperties = () => {
       ],
       yearBuilt: 2020,
       parking: "2-Car Garage",
-      lotSize: "0.5 acres"
+      lotSize: "0.5 acres",
+      rating: 4.9,
+      reviews: 28,
+      virtualTour: true,
+      energyRating: "A+",
+      nearbyAmenities: [
+        "Beach Access",
+        "Shopping Center",
+        "Fine Dining",
+        "Golf Course"
+      ]
     },
     {
       id: 2,
@@ -56,7 +66,17 @@ const FeaturedProperties = () => {
       ],
       yearBuilt: 2018,
       parking: "Valet Parking",
-      lotSize: "N/A"
+      lotSize: "N/A",
+      rating: 4.8,
+      reviews: 42,
+      virtualTour: true,
+      energyRating: "A",
+      nearbyAmenities: [
+        "Central Park",
+        "Subway Station",
+        "Luxury Shopping",
+        "Museums"
+      ]
     },
     {
       id: 3,
@@ -80,14 +100,24 @@ const FeaturedProperties = () => {
       ],
       yearBuilt: 2015,
       parking: "2 Outdoor Spaces",
-      lotSize: "0.25 acres"
+      lotSize: "0.25 acres",
+      rating: 4.7,
+      reviews: 35,
+      virtualTour: true,
+      energyRating: "B+",
+      nearbyAmenities: [
+        "Ski Resort",
+        "Hiking Trails",
+        "Local Shops",
+        "Restaurants"
+      ]
     },
     {
       id: 4,
       title: "Urban Luxury Penthouse",
       location: "Miami, Florida",
       price: "$890,000",
-      image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=400&fit=crop",
       beds: 3,
       baths: 3,
       sqft: 2200,
@@ -104,14 +134,24 @@ const FeaturedProperties = () => {
       ],
       yearBuilt: 2021,
       parking: "2 Reserved Spaces",
-      lotSize: "N/A"
+      lotSize: "N/A",
+      rating: 5.0,
+      reviews: 15,
+      virtualTour: true,
+      energyRating: "A+",
+      nearbyAmenities: [
+        "Beach",
+        "Marina",
+        "Nightlife",
+        "Shopping"
+      ]
     },
     {
       id: 5,
       title: "Mountain View Estate",
       location: "Boulder, Colorado",
       price: "$720,000",
-      image: "https://images.unsplash.com/photo-1551038247-3d9af20df552?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop",
       beds: 5,
       baths: 4,
       sqft: 3500,
@@ -128,14 +168,24 @@ const FeaturedProperties = () => {
       ],
       yearBuilt: 2017,
       parking: "3-Car Garage",
-      lotSize: "2.5 acres"
+      lotSize: "2.5 acres",
+      rating: 4.9,
+      reviews: 23,
+      virtualTour: true,
+      energyRating: "A",
+      nearbyAmenities: [
+        "Hiking Trails",
+        "Parks",
+        "Schools",
+        "Downtown"
+      ]
     },
     {
       id: 6,
       title: "Modern Lakefront Home",
       location: "Lake Tahoe, California",
       price: "$1,200,000",
-      image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop",
       beds: 4,
       baths: 3,
       sqft: 2800,
@@ -152,7 +202,17 @@ const FeaturedProperties = () => {
       ],
       yearBuilt: 2019,
       parking: "2-Car Garage",
-      lotSize: "0.75 acres"
+      lotSize: "0.75 acres",
+      rating: 4.8,
+      reviews: 31,
+      virtualTour: true,
+      energyRating: "A",
+      nearbyAmenities: [
+        "Lake Access",
+        "Ski Resort",
+        "Marina",
+        "Restaurants"
+      ]
     }
   ];
 
@@ -185,6 +245,27 @@ const FeaturedProperties = () => {
     setSelectedProperty(property);
   };
 
+  const handleScheduleViewing = () => {
+    toast({
+      title: "Viewing Scheduled",
+      description: "A representative will contact you shortly to confirm your viewing appointment.",
+    });
+  };
+
+  const handleVirtualTour = () => {
+    toast({
+      title: "Virtual Tour",
+      description: "Launching virtual tour experience...",
+    });
+  };
+
+  const handleContactAgent = () => {
+    toast({
+      title: "Contact Agent",
+      description: "Connecting you with our property specialist...",
+    });
+  };
+
   const handleViewAllProperties = () => {
     toast({
       title: "All Properties",
@@ -202,7 +283,7 @@ const FeaturedProperties = () => {
   return (
     <section id="properties" className="py-20 relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-800 to-navy-900" />
+      <div className="absolute inset-0 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900" />
       
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
@@ -345,89 +426,146 @@ const FeaturedProperties = () => {
 
       {/* Property Details Dialog */}
       <Dialog open={!!selectedProperty} onOpenChange={() => setSelectedProperty(null)}>
-        <DialogContent className="max-w-3xl bg-navy-800/95 backdrop-blur-lg border-electric-500/20">
+        <DialogContent className="max-w-4xl bg-navy-800/95 backdrop-blur-lg border-electric-500/20">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-gradient">
+            <DialogTitle className="text-3xl font-bold text-gradient">
               {selectedProperty?.title}
             </DialogTitle>
-            <DialogDescription className="text-gray-300">
+            <DialogDescription className="text-gray-300 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-cyan-400" />
               {selectedProperty?.location}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-6">
-            {/* Main Image */}
-            <div className="relative rounded-lg overflow-hidden">
+          <div className="grid gap-8">
+            {/* Main Image and Price Section */}
+            <div className="relative rounded-xl overflow-hidden group">
               <img
                 src={selectedProperty?.image}
                 alt={selectedProperty?.title}
-                className="w-full h-64 object-cover"
+                className="w-full h-[400px] object-cover transition-all duration-500 group-hover:scale-105"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-navy-900 to-transparent p-4">
-                <div className="text-3xl font-bold text-gradient">
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-transparent to-transparent" />
+              
+              {/* Price Tag */}
+              <div className="absolute bottom-6 left-6 space-y-2">
+                <div className="text-4xl font-bold text-gradient">
                   {selectedProperty?.price}
                 </div>
-              </div>
-            </div>
-
-            {/* Property Details */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white">Property Details</h3>
-                <div className="grid grid-cols-2 gap-4 text-gray-300">
-                  <div>
-                    <span className="text-cyan-400">Type:</span> {selectedProperty?.type}
-                  </div>
-                  <div>
-                    <span className="text-cyan-400">Year Built:</span> {selectedProperty?.yearBuilt}
-                  </div>
-                  <div>
-                    <span className="text-cyan-400">Bedrooms:</span> {selectedProperty?.beds}
-                  </div>
-                  <div>
-                    <span className="text-cyan-400">Bathrooms:</span> {selectedProperty?.baths}
-                  </div>
-                  <div>
-                    <span className="text-cyan-400">Square Feet:</span> {selectedProperty?.sqft}
-                  </div>
-                  <div>
-                    <span className="text-cyan-400">Lot Size:</span> {selectedProperty?.lotSize}
-                  </div>
-                  <div>
-                    <span className="text-cyan-400">Parking:</span> {selectedProperty?.parking}
-                  </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                  <span className="font-semibold">{selectedProperty?.rating}</span>
+                  <span className="text-sm">({selectedProperty?.reviews} reviews)</span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white">Features</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {selectedProperty?.features.map((feature: string, index: number) => (
-                    <div key={index} className="flex items-center text-gray-300">
-                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-electric-500 to-purple-500 mr-2" />
-                      {feature}
+              {/* Quick Action Buttons */}
+              <div className="absolute top-6 right-6 flex gap-3">
+                <button 
+                  onClick={() => handleVirtualTour()}
+                  className="btn-primary py-2 px-4 text-sm"
+                >
+                  Virtual Tour
+                </button>
+                <button 
+                  onClick={() => selectedProperty && handleFavoriteToggle(selectedProperty.id, selectedProperty.title)}
+                  className={`glass-card w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+                    selectedProperty && likedProperties.has(selectedProperty.id) ? 'bg-red-500/20' : ''
+                  }`}
+                >
+                  <Heart 
+                    className={`w-5 h-5 ${
+                      selectedProperty && likedProperties.has(selectedProperty.id) 
+                        ? 'text-red-500 fill-red-500' 
+                        : 'text-white'
+                    }`} 
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Property Details Grid */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Left Column - Main Details */}
+              <div className="space-y-6">
+                <div className="glass-card-dark p-6 space-y-4">
+                  <h3 className="text-xl font-semibold text-gradient">Property Details</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <p className="text-gray-400 text-sm">Property Type</p>
+                      <p className="text-white font-medium">{selectedProperty?.type}</p>
                     </div>
-                  ))}
+                    <div className="space-y-1">
+                      <p className="text-gray-400 text-sm">Year Built</p>
+                      <p className="text-white font-medium">{selectedProperty?.yearBuilt}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-gray-400 text-sm">Lot Size</p>
+                      <p className="text-white font-medium">{selectedProperty?.lotSize}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-gray-400 text-sm">Parking</p>
+                      <p className="text-white font-medium">{selectedProperty?.parking}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-gray-400 text-sm">Energy Rating</p>
+                      <p className="text-white font-medium">{selectedProperty?.energyRating}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Features */}
+                <div className="glass-card-dark p-6 space-y-4">
+                  <h3 className="text-xl font-semibold text-gradient">Key Features</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {selectedProperty?.features.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-electric-500 to-purple-500" />
+                        <span className="text-gray-300">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Description */}
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-2">Description</h3>
-              <p className="text-gray-300 leading-relaxed">
-                {selectedProperty?.description}
-              </p>
+              {/* Right Column - Additional Info */}
+              <div className="space-y-6">
+                {/* Description */}
+                <div className="glass-card-dark p-6 space-y-4">
+                  <h3 className="text-xl font-semibold text-gradient">Description</h3>
+                  <p className="text-gray-300 leading-relaxed">
+                    {selectedProperty?.description}
+                  </p>
+                </div>
+
+                {/* Nearby Amenities */}
+                <div className="glass-card-dark p-6 space-y-4">
+                  <h3 className="text-xl font-semibold text-gradient">Nearby Amenities</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {selectedProperty?.nearbyAmenities.map((amenity, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500" />
+                        <span className="text-gray-300">{amenity}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 mt-4">
-              <button className="btn-primary flex-1">Schedule Viewing</button>
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button 
-                className="btn-secondary flex-1"
-                onClick={() => handleFavoriteToggle(selectedProperty?.id, selectedProperty?.title)}
+                onClick={handleScheduleViewing}
+                className="btn-primary flex-1 py-4 text-lg"
               >
-                {likedProperties.has(selectedProperty?.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                Schedule Viewing
+              </button>
+              <button 
+                onClick={handleContactAgent}
+                className="btn-secondary flex-1 py-4 text-lg"
+              >
+                Contact Agent
               </button>
             </div>
           </div>
