@@ -1,11 +1,12 @@
-
 import { useState } from 'react';
 import { MapPin, Bed, Bath, Square, Heart, ArrowRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const FeaturedProperties = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [likedProperties, setLikedProperties] = useState<Set<number>>(new Set());
+  const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const { toast } = useToast();
 
   const properties = [
@@ -19,7 +20,19 @@ const FeaturedProperties = () => {
       baths: 3,
       sqft: 2800,
       type: "Villa",
-      featured: true
+      featured: true,
+      description: "Experience luxury living at its finest in this stunning Malibu villa. Featuring breathtaking ocean views, a private infinity pool, and state-of-the-art amenities. The open-concept living space seamlessly blends indoor and outdoor living, perfect for entertaining or relaxing by the sea.",
+      features: [
+        "Ocean View",
+        "Private Pool",
+        "Smart Home System",
+        "Wine Cellar",
+        "Chef's Kitchen",
+        "Home Theater"
+      ],
+      yearBuilt: 2020,
+      parking: "2-Car Garage",
+      lotSize: "0.5 acres"
     },
     {
       id: 2,
@@ -31,7 +44,19 @@ const FeaturedProperties = () => {
       baths: 2,
       sqft: 1900,
       type: "Apartment",
-      featured: true
+      featured: true,
+      description: "Live in the heart of Manhattan in this luxurious penthouse apartment. Floor-to-ceiling windows offer spectacular city views, while high-end finishes and smart home features provide the ultimate urban living experience. Walking distance to Central Park and premier shopping.",
+      features: [
+        "City Views",
+        "Doorman Building",
+        "Fitness Center",
+        "Rooftop Terrace",
+        "Concierge Service",
+        "Pet Friendly"
+      ],
+      yearBuilt: 2018,
+      parking: "Valet Parking",
+      lotSize: "N/A"
     },
     {
       id: 3,
@@ -43,7 +68,19 @@ const FeaturedProperties = () => {
       baths: 2,
       sqft: 1200,
       type: "Cottage",
-      featured: true
+      featured: true,
+      description: "Escape to this charming mountain cottage in Aspen. Perfect for ski enthusiasts or those seeking a peaceful mountain getaway. Features include a cozy fireplace, rustic wood finishes, and stunning mountain views. Close to ski slopes and hiking trails.",
+      features: [
+        "Mountain Views",
+        "Fireplace",
+        "Ski Storage",
+        "Hot Tub",
+        "Heated Floors",
+        "Wood Deck"
+      ],
+      yearBuilt: 2015,
+      parking: "2 Outdoor Spaces",
+      lotSize: "0.25 acres"
     },
     {
       id: 4,
@@ -55,7 +92,19 @@ const FeaturedProperties = () => {
       baths: 3,
       sqft: 2200,
       type: "Penthouse",
-      featured: false
+      featured: false,
+      description: "Experience the epitome of luxury living in this Miami penthouse. Featuring panoramic ocean views, designer finishes, and a private rooftop terrace. The open floor plan and floor-to-ceiling windows create a bright, airy atmosphere perfect for modern living.",
+      features: [
+        "Ocean Views",
+        "Private Terrace",
+        "Smart Home",
+        "Private Elevator",
+        "Wine Room",
+        "Spa Bathroom"
+      ],
+      yearBuilt: 2021,
+      parking: "2 Reserved Spaces",
+      lotSize: "N/A"
     },
     {
       id: 5,
@@ -67,7 +116,19 @@ const FeaturedProperties = () => {
       baths: 4,
       sqft: 3500,
       type: "Estate",
-      featured: false
+      featured: false,
+      description: "This magnificent estate offers unparalleled mountain views and luxury living. The property features expansive outdoor living spaces, a gourmet kitchen, and high-end finishes throughout. Perfect for those seeking privacy and natural beauty.",
+      features: [
+        "Mountain Views",
+        "Guest House",
+        "Home Gym",
+        "Solar Panels",
+        "Garden",
+        "Media Room"
+      ],
+      yearBuilt: 2017,
+      parking: "3-Car Garage",
+      lotSize: "2.5 acres"
     },
     {
       id: 6,
@@ -79,7 +140,19 @@ const FeaturedProperties = () => {
       baths: 3,
       sqft: 2800,
       type: "Lakefront",
-      featured: true
+      featured: true,
+      description: "Stunning lakefront property with direct water access and a private dock. Modern architecture meets natural beauty with walls of glass showcasing lake views. Features include a gourmet kitchen, home automation, and outdoor entertainment areas.",
+      features: [
+        "Lake Views",
+        "Private Dock",
+        "Boat Slip",
+        "Outdoor Kitchen",
+        "Fire Pit",
+        "Game Room"
+      ],
+      yearBuilt: 2019,
+      parking: "2-Car Garage",
+      lotSize: "0.75 acres"
     }
   ];
 
@@ -109,10 +182,7 @@ const FeaturedProperties = () => {
   };
 
   const handleViewDetails = (property: typeof properties[0]) => {
-    toast({
-      title: "View Details",
-      description: `Viewing detailed information for ${property.title}`,
-    });
+    setSelectedProperty(property);
   };
 
   const handleViewAllProperties = () => {
@@ -272,6 +342,97 @@ const FeaturedProperties = () => {
           </button>
         </div>
       </div>
+
+      {/* Property Details Dialog */}
+      <Dialog open={!!selectedProperty} onOpenChange={() => setSelectedProperty(null)}>
+        <DialogContent className="max-w-3xl bg-navy-800/95 backdrop-blur-lg border-electric-500/20">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-gradient">
+              {selectedProperty?.title}
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              {selectedProperty?.location}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-6">
+            {/* Main Image */}
+            <div className="relative rounded-lg overflow-hidden">
+              <img
+                src={selectedProperty?.image}
+                alt={selectedProperty?.title}
+                className="w-full h-64 object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-navy-900 to-transparent p-4">
+                <div className="text-3xl font-bold text-gradient">
+                  {selectedProperty?.price}
+                </div>
+              </div>
+            </div>
+
+            {/* Property Details */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white">Property Details</h3>
+                <div className="grid grid-cols-2 gap-4 text-gray-300">
+                  <div>
+                    <span className="text-cyan-400">Type:</span> {selectedProperty?.type}
+                  </div>
+                  <div>
+                    <span className="text-cyan-400">Year Built:</span> {selectedProperty?.yearBuilt}
+                  </div>
+                  <div>
+                    <span className="text-cyan-400">Bedrooms:</span> {selectedProperty?.beds}
+                  </div>
+                  <div>
+                    <span className="text-cyan-400">Bathrooms:</span> {selectedProperty?.baths}
+                  </div>
+                  <div>
+                    <span className="text-cyan-400">Square Feet:</span> {selectedProperty?.sqft}
+                  </div>
+                  <div>
+                    <span className="text-cyan-400">Lot Size:</span> {selectedProperty?.lotSize}
+                  </div>
+                  <div>
+                    <span className="text-cyan-400">Parking:</span> {selectedProperty?.parking}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white">Features</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {selectedProperty?.features.map((feature: string, index: number) => (
+                    <div key={index} className="flex items-center text-gray-300">
+                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-electric-500 to-purple-500 mr-2" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <h3 className="text-lg font-semibold text-white mb-2">Description</h3>
+              <p className="text-gray-300 leading-relaxed">
+                {selectedProperty?.description}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 mt-4">
+              <button className="btn-primary flex-1">Schedule Viewing</button>
+              <button 
+                className="btn-secondary flex-1"
+                onClick={() => handleFavoriteToggle(selectedProperty?.id, selectedProperty?.title)}
+              >
+                {likedProperties.has(selectedProperty?.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
